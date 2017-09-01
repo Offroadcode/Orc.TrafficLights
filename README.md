@@ -1,11 +1,15 @@
 # Orc.TrafficLights
 
 This is our standard traffic light implmentation. To install it you simply reference the Dll and add the web.config sections
-Add This to system.webServer/handlers
+Add this to system.webServer/handlers
+```
 <add name="TrafficLights" path="TrafficLights.ashx" verb="*" type="Orc.TrafficLights.TrafficLightHandler, Orc.TrafficLights" preCondition="integratedMode,runtimeVersionv4.0" />
+```
 
-Add system.web/httpHandlers
+and add this to system.web/httpHandlers
+```
 <add verb="*" path="TrafficLights.ashx" type="Orc.TrafficLights.TrafficLightHandler, Orc.TrafficLights" />
+```
 
 ## Custom tests
 
@@ -32,8 +36,8 @@ Note: theses tests CAN throw exceptions as they are caught when executed. Meanin
             get { return "Test if Umbraco can talk to the database"; }
         }
     }
-    ```
-    These tests are automatically found and wired in using reflection on the first hit of the TrafficLight.ashx page.
+```
+These tests are automatically found and wired in using reflection on the first hit of the TrafficLight.ashx page.
     
-    ## Automation
-    you can request TrafficLights.ashx?automatedCheck=yes and this will return a 500 or a 200 status code if any of the tests fail. This is for Server density monitoring where it looks at the status code
+## Automation
+you can request TrafficLights.ashx?automatedCheck=yes and this will return a 500 or a 200 status code if any of the tests fail. This is for Server density monitoring where it looks at the status code
