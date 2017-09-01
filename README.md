@@ -2,12 +2,12 @@
 
 This is our standard traffic light implmentation. To install it you simply reference the Dll and add the web.config sections
 Add this to system.webServer/handlers
-```
+```XML
 <add name="TrafficLights" path="TrafficLights.ashx" verb="*" type="Orc.TrafficLights.TrafficLightHandler, Orc.TrafficLights" preCondition="integratedMode,runtimeVersionv4.0" />
 ```
 
 and add this to system.web/httpHandlers
-```
+```XML
 <add verb="*" path="TrafficLights.ashx" type="Orc.TrafficLights.TrafficLightHandler, Orc.TrafficLights" />
 ```
 
@@ -16,7 +16,7 @@ and add this to system.web/httpHandlers
 from your class project, you can implement the abstract class BaseTrafficLightTest, which you can code to test what you want. for example a test which checks if umbraco can communicate with the Database.
 
 Note: theses tests CAN throw exceptions as they are caught when executed. Meaning you test doesnt have to account for any exceptions as any uncaught exceptions will fail the test.
-```
+```C#
  class UmbracoCanTalkToDbTest :BaseTrafficLightTest
     {
         public override void RunTest(ref Orc.TrafficLights.Models.TestResult result)
