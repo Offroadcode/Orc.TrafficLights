@@ -3,6 +3,7 @@ using Orc.TrafficLights.Tests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,7 +34,7 @@ namespace Orc.TrafficLights
                     foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
                     {
                         //For each of the types in this assembly
-                        foreach (Type t in asm.GetTypes())
+                        foreach (Type t in GetLoadableTypes(asm))
                         {
                             //if the current type is based on the BaseTrafficLightTest and it ISNT the abstract BaseTrafficLightTest itself
                             if (ti.IsAssignableFrom(t) && !t.IsAbstract)
@@ -69,6 +70,26 @@ namespace Orc.TrafficLights
                 results.Add(model);
             }
             return results;
+        }
+
+        /// <summary>
+        /// Safely Retrives all loadable types from the assembly
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <returns></returns>
+        private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
+        {
+            IEnumerable<Type> types;
+            try
+            {
+                types = assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                types = e.Types.Where(t => t != null);
+            }
+
+            return types;
         }
     }
 }
