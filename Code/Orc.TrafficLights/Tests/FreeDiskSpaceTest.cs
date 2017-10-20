@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Orc.TrafficLights.Tests
 {
-    class FreeDiskSpaceTest : BaseTrafficLightTest
+    public class FreeDiskSpaceTest : BaseTrafficLightTest
     {
         public override void RunTest(ref TestResult model)
         {
@@ -40,7 +40,7 @@ namespace Orc.TrafficLights.Tests
 
         public override string TestName
         {
-            get { return "Checks if there is any available disk space on the server"; }
+            get { return "Is there any available disk space on the server"; }
         }
     }
 }
