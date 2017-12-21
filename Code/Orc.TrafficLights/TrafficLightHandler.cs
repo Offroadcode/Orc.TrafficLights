@@ -26,11 +26,32 @@ namespace Orc.TrafficLights
 
             if (context.Request.QueryString.AllKeys.Any(x => x == "automatedCheck"))
             {
-                if (output.Any(x => x.Status == Models.TestStatus.Failure || x.Status == Models.TestStatus.Exception))
+                // Read the time range we don't throw errors im between
+                // This is for sites running maintanence at certain times, so we can avoid false positive alerts
+                var startTimeString = context.Request.QueryString["disabledStartTime"];
+                var endTimeString = context.Request.QueryString["disabledEndTime"];
+
+                TimeSpan startTime;
+                TimeSpan endTime;
+                if (TimeSpan.TryParse(startTimeString, out startTime) && TimeSpan.TryParse(endTimeString, out endTime))
                 {
-                    context.Response.StatusCode = 500;
-                    context.Response.Write("Error");
-                    
+                    // Don't show an error page when its thrown between the specified time range
+                    if (!(DateTime.UtcNow.TimeOfDay > startTime && DateTime.UtcNow.TimeOfDay < endTime))
+                    {
+                        if (output.Any(x => x.Status == Models.TestStatus.Failure || x.Status == Models.TestStatus.Exception))
+                        {
+                            context.Response.StatusCode = 500;
+                            context.Response.Write("Error");
+                        }
+                    }
+                }
+                else
+                {
+                    if (output.Any(x => x.Status == Models.TestStatus.Failure || x.Status == Models.TestStatus.Exception))
+                    {
+                        context.Response.StatusCode = 500;
+                        context.Response.Write("Error");
+                    }
                 }
             }
             else
